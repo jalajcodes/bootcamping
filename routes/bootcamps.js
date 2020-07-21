@@ -1,4 +1,5 @@
 import express from 'express';
+import { asyncHandler } from '../middlewares/async.js';
 
 import {
 	getBootcamps,
@@ -10,8 +11,12 @@ import {
 
 const router = express.Router();
 
-router.route('/').get(getBootcamps).post(createBootcamp);
+router.route('/').get(asyncHandler(getBootcamps)).post(asyncHandler(createBootcamp));
 
-router.route('/:id').get(getBootcamp).put(updateBootcamp).delete(deleteBootcamp);
+router
+	.route('/:id')
+	.get(asyncHandler(getBootcamp))
+	.put(asyncHandler(updateBootcamp))
+	.delete(asyncHandler(deleteBootcamp));
 
 export default router;
