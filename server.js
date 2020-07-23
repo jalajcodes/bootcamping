@@ -5,11 +5,17 @@ import colors from 'colors';
 import { errorHandler } from './middlewares/error.js';
 import { connectDB } from './config/db.js';
 
-// Route files
-import bootcamps from './routes/bootcamps.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Load config.env
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: __dirname + '\\.env' });
+
+// Route files
+import bootcamps from './routes/bootcamps.js';
 
 // Connect to database
 connectDB();
@@ -20,6 +26,7 @@ const app = express();
 app.use(express.json());
 
 // Dev logging middleware
+
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
