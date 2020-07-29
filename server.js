@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import colors from 'colors';
+import fileupload from 'express-fileupload';
 import { errorHandler } from './middlewares/error.js';
 import { connectDB } from './config/db.js';
 
@@ -16,6 +17,7 @@ dotenv.config({ path: __dirname + '\\.env' });
 
 // Route files
 import bootcamps from './routes/bootcamps.js';
+import courses from './routes/courses.js';
 
 // Connect to database
 connectDB();
@@ -31,8 +33,12 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
 
+// File upload middleware
+app.use(fileupload());
+
 // Mount Routers
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
 
 // Error Hanlder
 app.use(errorHandler);
