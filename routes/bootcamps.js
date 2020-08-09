@@ -11,6 +11,9 @@ import {
 	uploadPhoto,
 } from '../controllers/bootcampsController.js';
 
+import Bootcamp from '../models/Bootcamp.js';
+import advancedResults from '../middlewares/advancedResults.js';
+
 // Include other resource router
 import courseRouter from './courses.js';
 
@@ -19,7 +22,10 @@ const router = express.Router();
 // Re-route into other resource routers
 router.use('/:bootcampId/courses', courseRouter);
 
-router.route('/').get(asyncHandler(getBootcamps)).post(asyncHandler(createBootcamp));
+router
+	.route('/')
+	.get(asyncHandler(advancedResults(Bootcamp, 'courses')), asyncHandler(getBootcamps))
+	.post(asyncHandler(createBootcamp));
 
 router
 	.route('/:id')
