@@ -6,7 +6,7 @@
 	"author": "Jalaj Gupta",
 	"type": "module",
 	"scripts": {
-		"start": "set NODE_ENV=production && node server",
+		"start": "NODE_ENV=production node server",
 		"dev": "nodemon server"
 	},
 	"dependencies": {

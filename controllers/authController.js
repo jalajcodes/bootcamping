@@ -14,11 +14,7 @@ export const register = async (req, res, next) => {
 		role,
 	});
 
-	const token = await user.getSignedJwtToken();
-	res.status(200).json({
-		success: true,
-		token,
-	});
+	sendTokenResponse(user, res, 200);
 };
 
 // @desc        Login User
@@ -46,8 +42,18 @@ export const login = async (req, res, next) => {
 		return next(new ErrorResponse('Invalid Credentials.', 401));
 	}
 
+	sendTokenResponse(user, res, 200);
+};
+// get token from model method , set cookie and send response
+const sendTokenResponse = async (res, user, statusCode) => {
 	const token = await user.getSignedJwtToken();
-	res.status(200).json({
+
+	const cookieOptions = {
+		httpOnly: true,
+		expires: new Date() + process.env.COOKIE_EXPIRY * 24 * 60 * 60 * 1000,
+	};
+
+	res.cookie('token', token, cookieOptions).status(statusCode).json({
 		success: true,
 		token,
 	});

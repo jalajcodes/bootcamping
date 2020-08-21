@@ -7,6 +7,7 @@ import { errorHandler } from './middlewares/error.js';
 import { connectDB } from './config/db.js';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,6 +28,9 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Cookie
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
